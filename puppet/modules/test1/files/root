@@ -1,0 +1,2 @@
+#This file created and maintained by jbccllmgtc610:/root/log-scripts/log-crontabs.sh, do not edit here
+0 */4 * * * /opt/verizon/scripts/delete-old-logs.sh > /root/delete-old-logs.sh.log 2>&1

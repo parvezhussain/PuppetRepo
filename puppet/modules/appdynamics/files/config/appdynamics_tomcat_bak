@@ -1,0 +1,55 @@
+#!/bin/bash 
+# 
+# Init file for AppDynamics Machine Agent 
+# 
+# chkconfig: 2345 60 25 
+# description: machine agent for AppDynamics
+
+#CHANGE ME: Set to the Java install directory 
+JAVA_HOME="/opt/AppDynamics/java"
+
+#CHANGE ME: Set to the agent's install directory 
+AGENT_HOME="/opt/AppDynamics/MachineAgent"
+AGENT="$AGENT_HOME/machineagent.jar" 
+
+#Set user to run as
+USER="tomcat"
+
+# Agent Options 
+# !!! These values will override /opt/AppDynamics/Machineagent/conf/controller-info.xml !!!
+# Leave these alone unless you are troubleshooting and you know what you are doing.
+AGENT_OPTIONS="" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.applicationName=<application-name>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.logging.dir=" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dmetric.http.listener=true | false 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dmetric.http.listener.port=<port>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dserver.name=<hostname>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.tierName=<tiername>"
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.nodeName=<nodename>"
+
+start() 
+{ 
+    nohup  su - "$USER" -c "$JAVA_HOME/bin/java $AGENT_OPTIONS -jar -Xmx32m $AGENT" > /dev/null 2>&1 & 
+}
+
+stop() 
+{ 
+    ps -ef |grep machineagent.jar |grep machineagent.jar|grep -v grep| awk '{print $2}' | xargs --no-run-if-empty kill -9
+}
+
+case "$1" in 
+start) 
+    start 
+;; 
+
+stop) 
+    stop 
+;; 
+
+restart) 
+    stop 
+    start 
+;; 
+*) 
+     echo "Usage: $0 start|stop|restart" 
+esac

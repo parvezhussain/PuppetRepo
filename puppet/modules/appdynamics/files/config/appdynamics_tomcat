@@ -1,0 +1,136 @@
+#!/bin/bash 
+# 
+# Init file for AppDynamics Machine Agent 
+# 
+# chkconfig: 2345 60 25 
+# description: machine agent for AppDynamics
+
+#CHANGE ME: Set to the Java install directory 
+JAVA_HOME="/opt/AppDynamics/java"
+
+#CHANGE ME: Set to the agent's install directory 
+AGENT_HOME="/opt/AppDynamics/MachineAgent"
+AGENT="$AGENT_HOME/machineagent.jar" 
+
+#Set user to run as
+APP_USER="tomcat"
+
+# Agent Options 
+# !!! These values will override /opt/AppDynamics/Machineagent/conf/controller-info.xml !!!
+# Leave these alone unless you are troubleshooting and you know what you are doing.
+AGENT_OPTIONS="" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.applicationName=<application-name>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.logging.dir=" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dmetric.http.listener=true | false "
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dmetric.http.listener.port=<port>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dserver.name=<hostname>" 
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.tierName=<tiername>"
+#AGENT_OPTIONS="$AGENT_OPTIONS -Dappdynamics.agent.nodeName=<nodename>"
+
+#PID Vars
+PID_FILE="/var/run/appdymanics.pid"
+PID_FROM_FILE=`test -f $PID_FILE && cat $PID_FILE`
+PID=""
+
+getpid()
+{
+    PID=`ps -ef | grep -v "grep" | grep "su - $APP_USER -c $JAVA_HOME" | grep "$AGENT" | awk '{ print $2 }'`
+}
+
+print_ok()
+{
+    printf "[ \e[1;32m%s\e[m ]\t%s\n" "OK" "$1"
+}
+
+print_failed()
+{
+    printf "[ \e[1;31m%s\e[m ]\t%s\n" "FAILED" "$1"
+}
+
+start() 
+{ 
+    if [[ ! -z $PID ]]
+    then
+       echo "AppDynamics already running."
+       exit 1
+    fi
+
+    printf "%-50s" "Starting AppDynamics"
+    nohup  su - "$APP_USER" -c "$JAVA_HOME/bin/java $AGENT_OPTIONS -jar -Xmx128m $AGENT" > /dev/null 2>&1 & 
+    sleep 1
+    getpid
+    if [ -n "$PID" ]
+    then
+        echo "$PID" > $PID_FILE
+        print_ok
+    else
+        print_failed
+    fi
+}
+
+stop() 
+{ 
+    printf "%-50s" "Stopping AppDynamics"
+    if [ -n "$PID" ]
+    then
+        PID_LIST=`ps -ef | grep -v "grep" | grep "$PID" | awk '{ print $2 }'`
+    fi
+    if [ -z "$PID_LIST" ]
+    then
+        print_failed "Process not running."
+        exit 0
+    else
+        kill -9 $PID_LIST
+    fi
+    rm -f $PID_FILE
+    while [ ! -z $PID ] 
+    do
+        sleep 1
+        getpid
+    done
+    print_ok
+}
+
+status()
+{
+    if [ -z "$PID_FROM_FILE" ] && [ -z "$PID" ]
+    then
+        echo "AppDynamics is not running."
+    elif [ -z "$PID_FROM_FILE" ] && [ ! -z "$PID" ]
+    then
+        echo "AppDynamics is running, but PID file does not exist."
+        echo "See, $PID_FILE"
+    elif [ ! -z "$PID_FROM_FILE" ] && [ -z "$PID" ]
+    then
+        echo "AppDynamics appears to have crashed.  The PID file exists, but process ($PID_FROM_FILE) not found."
+        echo "See, $PID_FILE"
+    elif [ "$PID_FROM_FILE" = "$PID" ]
+    then
+	echo "AppDynamics is running with PID $PID."
+    else
+        echo "AppDynamics appears to be running, but the PID ($PID) does not match the PID file ($PID_FROM_FILE)"
+    fi
+}
+
+getpid
+
+case "$1" in 
+start) 
+    start 
+;; 
+
+stop) 
+    stop 
+;; 
+
+restart) 
+    stop 
+    sleep 2
+    start 
+;; 
+status)
+    status
+;;
+*) 
+     echo "Usage: $0 start|stop|restart|status"
+esac
