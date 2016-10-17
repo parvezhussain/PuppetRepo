@@ -1,0 +1,30 @@
+# PuppetRepo
+Puppet Repo for JB
+
+rm -rf /etc/puppet > /dev/null
+git clone https://parvezhussain@github.com/parvezhussain/PuppetRepo.git  /etc/puppet
+
+##################################################################
+Add and modify files in github
+##################################################################
+## On Puppet Master Server
+
+1. cd /etc/puppet/manifests
+
+2. Add or edit an existing file
+        vi site.pp
+
+3. Stage the file in GIT (if it is a new file)
+        git add site.pp
+
+4. Commit the file and add a comment
+        git commit -m "Update blah blah blah"
+
+5. Push the change to github repository.
+        git push origin master
+
+6. Open your browser and check the update file in github
+        https://github.com/parvezhussain/PuppetRepo
+
+
+
