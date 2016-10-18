@@ -44,11 +44,14 @@ node /.*cui.*\.localhost\.com$/ {
         include accounts
         realize (Accounts::Localuser['jbinst'])
         realize (Accounts::Localuser['sumouser'])
-        include nodeinfo
+        realize (Accounts::Localuser['jbcomp'])
+#        include nodeinfo
+	include misc
         include appdynamics
         include cron
         include verizonscripts
-        include datalexjboss
+        include datalextomcat
+#        include jetbluetomcat
 }
 
 

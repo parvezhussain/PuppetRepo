@@ -28,5 +28,10 @@ class accounts {
     realname        =>  'tomcat User',
     pass            =>  '$6$0b.gzsmP$xFALXnzKCxVWBRQmQJSI6trIhTqW05nzAj35ulNiemQIINQl.ZpCEuekIilI/RUCnZzdj9C80uABs5JpzvkMn0',
   }
+  @accounts::localuser { 'jbcomp':
+    uid             =>  1006,
+    realname        =>  'JetBlue Component',
+    pass            =>  '$6$0b.gzsmP$xFALXnzKCxVWBRQmQJSI6trIhTqW05nzAj35ulNiemQIINQl.ZpCEuekIilI/RUCnZzdj9C80uABs5JpzvkMn0',
+  }
 
 }
