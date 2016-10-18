@@ -25,4 +25,17 @@ class datalextomcat {
         ensure => link,
 	target => "/opt/datalex/totality/tdpcontrol-tomcat",
     }
+    file {"/datalex":
+        ensure  => link,
+        target  => '/opt/datalex',
+    }
+
+    file {"/opt/datalex/apache-tomcat-6.0.35/bin":
+	mode => 755,
+	recurse => true,
+    }
+    file {"/opt/datalex/totality":
+	mode => 755,
+	recurse => true,
+    }
 }
