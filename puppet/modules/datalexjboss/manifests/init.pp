@@ -37,11 +37,18 @@ include ::nodeinfo
         target  => 'jboss-5.1.0.GA',
     }
 
+    file {"/opt/datalex/totality":
+        ensure => directory,
+        owner => jbinst,
+        group => jbinst,
+	mode => 755,
+        recurse => true,
+	source => "puppet:///modules/datalexjboss/totality",
+        }
+
+
    file { "/etc/init.d/tdpcontrol-jboss":
-        ensure          => file,
-        owner           => root,
-        group           => root,
-        mode            => 750,
-        source          => "puppet:///modules/datalexjboss/tdpcontrol-jboss",
+        ensure => link,
+	target => "/opt/datalex/totality/tdpcontrol-jboss",
         }
 }
