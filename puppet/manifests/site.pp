@@ -61,6 +61,7 @@ node /.*tdp.*\.localhost\.com$/ {
 	realize (Accounts::Localuser['jbinst'])
 	realize (Accounts::Localuser['sumouser'])
 	include nodeinfo
+	include ntp
 	include appdynamics
 	include cron
 	include verizonscripts
