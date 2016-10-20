@@ -10,10 +10,12 @@ class datalextomcat {
 	ensure => directory,
 	owner => jbinst,
 	group => jbinst,
+	mode => 0755,
 	recurse => true,
 	source => "puppet:///installer_files/cui",
 	require => User["jbinst"],
 	}
+->
 
 ## Create the link
     file {"/opt/datalex/tomcat":
@@ -30,12 +32,4 @@ class datalextomcat {
         target  => '/opt/datalex',
     }
 
-    file {"/opt/datalex/apache-tomcat-6.0.35/bin":
-	mode => 755,
-	recurse => true,
-    }
-    file {"/opt/datalex/totality":
-	mode => 755,
-	recurse => true,
-    }
 }

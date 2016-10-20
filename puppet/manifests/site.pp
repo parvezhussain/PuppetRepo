@@ -51,7 +51,7 @@ node /.*cui.*\.localhost\.com$/ {
         include cron
         include verizonscripts
         include datalextomcat
-#        include jetbluetomcat
+        include jetbluetomcat
 }
 
 
