@@ -32,6 +32,7 @@ node /.*(kci|cts|irs|wci|css).*\.localhost\.com$/ {
 	realize (Accounts::Localuser['tomcat'])
 #	realize (Accounts::Sshkey['tomcat'])
 	realize (Accounts::Localuser['sumouser'])
+	include ntp
 	include appdynamics
 	include misc
 	include cron
@@ -46,6 +47,7 @@ node /.*cui.*\.localhost\.com$/ {
         realize (Accounts::Localuser['sumouser'])
         realize (Accounts::Localuser['jbcomp'])
 #        include nodeinfo
+	include ntp
 	include misc
         include appdynamics
         include cron
