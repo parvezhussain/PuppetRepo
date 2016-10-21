@@ -47,6 +47,7 @@ node /.*cui.*\.localhost\.com$/ {
         realize (Accounts::Localuser['sumouser'])
         realize (Accounts::Localuser['jbcomp'])
 #        include nodeinfo
+	include httpd
 	include ntp
 	include misc
         include appdynamics
