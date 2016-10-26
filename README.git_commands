@@ -3,6 +3,7 @@ Puppet Repo for JB
 
 cd /opt/git
 git clone https://parvezhussain@github.com/parvezhussain/PuppetRepo.git  /opt/git
+chown -R puppet:puppet /opt/git/puppet
 
 ##################################################################
 Add and modify files in github
