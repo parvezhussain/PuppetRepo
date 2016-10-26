@@ -56,6 +56,14 @@ $output = generate("/bin/bash", "-c", "/etc/puppet/modules/appdynamics/files/con
 	require => [ User["$fname"], Exec["unpack AppDynamics"] ],
         }
 
+## Create the link		
+     file {"/opt/AppDynamics":		
+         ensure  => link,		
+         target  => 'AppDynamics4.1.4.0',		
+	require => File["/opt/AppDynamics4.1.4.0"]
+     }		
+ 
+
    file { "/etc/init.d/appdynamics":
         ensure          => file,
         owner           => root,
