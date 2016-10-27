@@ -72,7 +72,7 @@ $output = generate("/bin/bash", "-c", "/etc/puppet/modules/appdynamics/files/con
         source          => "puppet:///modules/appdynamics/config/appdynamics_${fname}",
         }
    
-   exec { "AppD_gz clean":
+   exec { "AppD_gz_clean":
 	command => "cat /dev/null > /tmp/AppDynamics4.1.4.0.tgz",
 	onlyif => "test -f /tmp/AppDynamics4.1.4.0.tgz -a -s /tmp/AppDynamics4.1.4.0.tgz",
 	path => ["/bin","/usr/bin"],
