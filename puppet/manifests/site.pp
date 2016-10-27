@@ -34,7 +34,7 @@ node /.*(kci|cts|irs|wci|css).*\.localhost\.com$/ {
 	realize (Accounts::Localuser['sumouser'])
 	include ntp
 	include appdynamics
-	include misc
+#	include misc
 	include cron
 	include verizonscripts
 	include ibmtomcat
@@ -49,7 +49,7 @@ node /.*cui.*\.localhost\.com$/ {
 #        include nodeinfo
 	include httpd
 	include ntp
-	include misc
+#	include misc
         include appdynamics
         include cron
         include verizonscripts

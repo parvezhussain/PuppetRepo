@@ -64,14 +64,6 @@ class nodeinfo () {
 
 notify {"$CodeSrcDir $CodeDestDir $fname":}
 
-   file {"/opt/puppet":
-        ensure => directory,
-        owner => puppet,
-        group => puppet,
-        mode => 0755
-       }
-
-
    file {"$CodeDestDir":
         ensure => directory,
 	replace => no,
