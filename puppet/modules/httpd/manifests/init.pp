@@ -7,10 +7,12 @@ class httpd {
 		ensure => file,
 		mode => 0644,
 		source => 'puppet:///modules/httpd/httpd.conf',
+		require => Package['httpd'],
 		}
 	service { 'httpd' :
 		ensure => running,
 		enable => true,
-		subscribe => File['/etc/httpd/conf/httpd.conf']
+		subscribe => File['/etc/httpd/conf/httpd.conf'],
+		require => Package['httpd'],
 		}
 	}

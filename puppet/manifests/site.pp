@@ -27,7 +27,8 @@ node /^peclient.*\.localhost\.com$/ {
 	include appdynamics
 }
 
-node /.*(kci|cts|irs|wci|css).*\.localhost\.com$/ {
+#node /.*(kci|cts|irs|wci|css).*\.localhost\.com$/ {
+node /.*(cts|irs|wci|css).*\.localhost\.com$/ {
 	include accounts
 	realize (Accounts::Localuser['tomcat'])
 #	realize (Accounts::Sshkey['tomcat'])
@@ -74,3 +75,18 @@ node /.*tdp.*\.localhost\.com$/ {
 #	notify { $::hello: }
 #	notify { $::info[CODEDIR]: }
 }
+
+node /.*kci.*\.localhost\.com$/ {
+        include accounts
+        realize (Accounts::Localuser['tomcat'])
+#       realize (Accounts::Sshkey['tomcat'])
+        realize (Accounts::Localuser['sumouser'])
+#        include ntp
+        include appdynamics
+        include cron
+        include verizonscripts
+      #  include ibmtomcat
+        include newibmtomcat
+
+}
+
