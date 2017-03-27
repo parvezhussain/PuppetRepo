@@ -52,6 +52,12 @@ class newibmtomcat {
         target           => "/opt/ibm/scripts/ibm_tomcat",
         }
 
+   exec { "ibm_build_gz_clean":
+        command => "cat /dev/null > /tmp/ibm_build_clean_1.2.tgz",
+        onlyif => "test -f /tmp/ibm_build_clean_1.2.tgz -a -s /tmp/ibm_build_clean_1.2.tgz",
+        path => ["/bin","/usr/bin"],
+        require => Exec["unpack ibm_build"]
+        }
 
 
 }
